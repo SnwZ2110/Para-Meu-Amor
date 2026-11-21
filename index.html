@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para você 💜</title>
+<style>
+:root{--bg:#fff0f7;--fg:#3b0a2a;--pink:#e6007e;--card:#ffffff;--soft:#ffc2e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1a0613;--fg:#ffe3f1;--pink:#ff3fa4;--card:#2b0d20;--soft:#5a1a42}}
+:root[data-theme="dark"]{--bg:#1a0613;--fg:#ffe3f1;--pink:#ff3fa4;--card:#2b0d20;--soft:#5a1a42}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Georgia,'Times New Roman',serif;text-align:center;line-height:1.5}
+section{max-width:640px;margin:0 auto;padding:48px 20px}
+h1{font-size:2.2rem;color:var(--pink);margin:0 0 8px}
+h2{color:var(--pink);font-size:1.5rem;margin:0 0 6px}
+.sub{opacity:.8;margin:0 0 24px}
+.timer{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:24px}
+.timer div{background:var(--card);border:2px solid var(--soft);border-radius:16px;padding:14px 4px}
+.timer b{display:block;font-size:1.8rem;color:var(--pink)}
+.timer span{font-size:.75rem;opacity:.8}
+.grid{display:grid;gap:12px}
+.card{background:var(--card);border:2px solid var(--soft);border-radius:16px;padding:20px;cursor:pointer;font:inherit;color:inherit;text-align:center;width:100%}
+.card:active{transform:scale(.98)}
+.card .back{display:none}
+.card.open .front{display:none}
+.card.open .back{display:block}
+.tag{font-size:.7rem;letter-spacing:.1em;color:var(--pink);display:block;margin-bottom:6px}
+.btn{background:var(--pink);color:#fff;border:0;border-radius:999px;padding:12px 28px;font:inherit;font-size:1rem;cursor:pointer}
+#letter{display:none;margin-top:24px;background:var(--card);border:2px solid var(--soft);border-radius:16px;padding:24px;text-align:left;animation:fade 1.2s ease}
+#letter.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+footer{padding:24px;opacity:.7;font-size:.85rem}
+.ar{display:none;color:var(--pink);font-size:1.4rem;font-weight:bold}
+.go .ar{display:inline-block;animation:blink .5s infinite alternate}
+.go span.ar{margin:0 24px}
+.go div.ar{display:block;margin:20px 0}
+.go #yes{animation:pulse .5s infinite alternate;font-size:1.3rem}
+@keyframes pulse{to{transform:scale(1.1)}}
+@keyframes blink{to{opacity:.3}}
+.big{font-size:2.4rem;margin:10px 0;transition:transform .15s}
+.bar{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:14px auto;max-width:280px}
+.bar i{display:block;height:100%;width:0;background:var(--pink)}
+input[type=range]{width:100%;accent-color:var(--pink)}
+#hug{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.fall{position:fixed;top:-30px;font-size:1.6rem;pointer-events:none;animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh)}}
+</style>
+</head>
+<body>
+<section>
+  <h1>Para você, <span id="nome"></span> <span id="egg" style="cursor:pointer">💜</span></h1>
+  <p id="secret" style="display:none;color:var(--pink);font-weight:bold">Você achou meu segredo 💜 Te amo mais do que consigo explicar em qualquer idioma.</p>
+  <p class="sub">Eu te hablo, you understand, e eu te amo nos três idiomas.</p>
+  <p class="sub">Nosso tempo desde a primeira conversa:</p>
+  <div class="timer">
+    <div><b id="d">0</b><span>dias</span></div>
+    <div><b id="h">0</b><span>horas</span></div>
+    <div><b id="m">0</b><span>min</span></div>
+    <div><b id="s">0</b><span>seg</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Motivos pelos quais eu te amo</h2>
+  <p class="sub">Toque num card pra traduzir 😏</p>
+  <div class="grid" id="cards"></div>
+</section>
+
+<section>
+  <h2>Minhas promessas</h2>
+  <div class="grid">
+    <div class="card" style="cursor:default">Nunca te deixar sozinha, nem nos dias difíceis. 💜</div>
+    <div class="card" style="cursor:default">Te escolher todos os dias, em português, inglês e espanhol. 💜</div>
+    <div class="card" style="cursor:default">Te abraçar forte sempre que eu puder. 💜</div>
+  </div>
+</section>
+
+<section>
+  <h2>Beijinhos 💋</h2>
+  <p class="sub">Toque pra receber um beijo, cada um diferente.</p>
+  <div class="big" id="kemoji">💋</div>
+  <p id="kmsg" style="min-height:3em"></p>
+  <button class="btn" id="kiss">Mandar um beijo 💋</button>
+  <p class="sub" style="margin-top:12px">Beijos enviados: <b id="kcount">0</b></p>
+</section>
+
+<section>
+  <h2>Abraço 🫂</h2>
+  <p class="sub">Segure o botão até encher pra receber um abraço bem apertado.</p>
+  <div class="big" id="hemoji">🤗</div>
+  <div class="bar"><i id="hbar"></i></div>
+  <button class="btn" id="hug">Segure pra abraçar 🫂</button>
+  <p id="hmsg" style="min-height:2em;margin-top:12px;color:var(--pink)"></p>
+</section>
+
+<section>
+  <h2>Termômetro de saudade</h2>
+  <p class="sub">Arraste e veja o quanto eu sinto sua falta.</p>
+  <div class="big" id="semoji">🥰</div>
+  <input type="range" id="sau" min="0" max="100" value="50">
+  <p id="smsg" style="min-height:3em"></p>
+</section>
+
+<section>
+  <h2>Te amo, de todos os jeitos</h2>
+  <p class="sub" id="lang">Em quantas línguas eu consigo dizer?</p>
+  <div class="big" style="font-size:1.5rem;min-height:3em" id="tam">💜</div>
+  <button class="btn" id="tbtn">Dizer de outro jeito 💬</button>
+</section>
+
+<section>
+  <h2>Cupons 🎟️</h2>
+  <p class="sub">Toque pra resgatar.</p>
+  <div class="grid" id="cup"></div>
+</section>
+
+<section>
+  <h2>Uma pergunta</h2>
+  <p class="sub">Você quer continuar sendo minha princesa?</p>
+  <div class="ar">⬇️⬇️⬇️⬇️⬇️</div>
+  <span class="ar">➡️➡️➡️</span> <button class="btn" id="yes">Sim 💜</button> <span class="ar">⬅️⬅️⬅️</span>
+  <div class="ar">⬆️⬆️⬆️⬆️⬆️</div>
+  <div class="ar">CLICA NO SIM!!! 💜</div>
+  <button class="btn" id="no" style="background:var(--soft);color:var(--fg);transition:transform .2s">Não</button>
+  <p id="ans" style="margin-top:20px;color:var(--pink)"></p>
+</section>
+
+<section>
+  <h2>Uma carta pra você</h2>
+  <p class="sub">Sem fotos, porque eu prefiro viver o momento com você.</p>
+  <button class="btn" id="open">Abrir carta 💌</button>
+  <div id="letter"></div>
+</section>
+
+<footer>Feito por mim, só pra você 💜</footer>
+
+<script>
+// ✏️ EDITE AQUI
+var NOME = "Princesa";
+var START = new Date("2026-10-16T18:35:00"); // data e hora da primeira conversa
+var REASONS = [
+  {en:"You make me laugh even on bad days.", es:"Me haces reír hasta en los días malos.", pt:"Você me faz rir até nos dias ruins."},
+  {en:"You are my peace and love, always.", es:"Eres mi paz y mi amor, siempre.", pt:"Você é minha paz e meu amor, sempre."},
+  {en:"I love your eyes, your mouth, your smile. All of you.", es:"Amo tus ojos, tu boca, tu sonrisa. Toda tú.", pt:"Amo seus olhos, sua boca, seu sorriso. Você inteira."},
+  {en:"You’re helping me learn Spanish.", es:"Me ayudas a aprender español.", pt:"Você me ajuda a aprender espanhol."},
+  {en:"You never get tired of my weird memes.", es:"Nunca te cansas de mis memes raros.", pt:"Você nunca cansa dos meus memes estranhos."},
+  {en:"With you, even a normal night feels special.", es:"Contigo, hasta una noche normal se siente especial.", pt:"Com você, até uma noite normal fica especial."}
+];
+var LETTER = "Amor, escrevi essa carta pra te dizer o que às vezes eu demoro a dizer. Se eu já te deixei esperando uma resposta, me perdoa: você merece minha atenção por inteiro. Eu gosto de você por inteiro, e quero continuar aprendendo a cuidar de você, a te fazer bem e a sua língua. Te amo mucho mucho mucho. 💜";
+// ----------------------------
+document.getElementById("nome").textContent = NOME;
+function tick(){
+  var t = Math.max(0, Date.now() - START.getTime()) / 1000;
+  document.getElementById("d").textContent = Math.floor(t/86400);
+  document.getElementById("h").textContent = Math.floor(t%86400/3600);
+  document.getElementById("m").textContent = Math.floor(t%3600/60);
+  document.getElementById("s").textContent = Math.floor(t%60);
+}
+tick(); setInterval(tick, 1000);
+var box = document.getElementById("cards");
+REASONS.forEach(function(r){
+  var b = document.createElement("button");
+  b.className = "card";
+  b.innerHTML = '<div class="front"><span class="tag">ENGLISH</span>'+r.en+'</div><div class="back"><span class="tag">ESPAÑOL</span>'+r.es+'<br><br><span class="tag">PORTUGUÊS</span>'+r.pt+'</div>';
+  b.onclick = function(){ b.classList.toggle("open"); };
+  box.appendChild(b);
+});
+document.getElementById("letter").textContent = LETTER;
+document.getElementById("open").onclick = function(){
+  document.getElementById("letter").classList.add("show");
+  this.style.display = "none";
+};
+var nos = ["Tem certeza? 🥺","Pensa de novo...","Esse botão tá quebrado kakak"], ni = 0;
+document.getElementById("no").onclick = function(){
+  if (ni >= nos.length) return; var self = this; this.textContent = nos[ni++]; if (ni === nos.length) { setTimeout(function(){ self.style.display = "none"; document.getElementById("yes").parentNode.classList.add("go"); }, 1300); }
+  this.style.transform = "translate(" + (Math.random()*60-30) + "px," + (Math.random()*40-20) + "px)";
+};
+document.getElementById("yes").onclick = function(){
+  document.getElementById("ans").textContent = "Eu sabia 💜 Te amo demasiado minha princesa"; for (var i = 0; i < 30; i++) { var f = document.createElement("span"); f.className = "fall"; f.textContent = "💜"; f.style.left = Math.random()*100 + "vw"; f.style.animationDelay = Math.random()*1.5 + "s"; document.body.appendChild(f); }
+};
+var $ = function(i){return document.getElementById(i)};
+var ec = 0;
+$("egg").onclick = function(){ ec++; if (ec >= 5) $("secret").style.display = "block"; };
+var KISS = ["Um beijinho na bochecha 💋","Un besito en la frente 💋","A kiss for my favorite person 💋","Um beijo de boa noite 🌙","Un beso de buenos días ☀️","Um beijo demorado, desses de filme 🎬","A big smooch, mwah! 😘","Um beijo na ponta do nariz 👃","Un beso en cada mejilla, mi vida 💋","Um beijo com sabor de saudade 💜","One kiss for every time you smiled today 😊","Un beso largo, de esos que paran el tiempo ⏳","Um beijo na testa, de quem cuida de você 💜","Besitos por todo tu rostro 🌸","Um beijo surpresa! 😳💋","A soft kiss on your hand, like a prince 👑","Un beso con mucho cariño, princesa 💜","Um beijo de língua... a que a gente tá aprendendo 😏","Um beijo pra cada dia que a gente se conhece 💜","Mil besos y uno más 💋"];
+var KE = ["💋","😘","😚","💜","😽"], kl = -1, kc = 0;
+$("kiss").onclick = function(){ var i; do { i = Math.floor(Math.random()*KISS.length); } while (i === kl); kl = i; kc++; $("kmsg").textContent = KISS[i]; $("kcount").textContent = kc; $("kemoji").textContent = KE[kc % KE.length]; };
+var HUGS = ["Abraço apertado recebido! 🫂💜","Un abrazo bien fuerte, mi vida 🫂","A big warm hug, just for you 🤗","Abraço de urso! 🐻💜","Un abrazo de esos que arreglan el día 💜","Te abraço até as costelas reclamarem kakak 😳"], hp = 0, ht = null;
+function hreset(){ hp = 0; $("hbar").style.width = "0"; $("hemoji").style.transform = "none"; }
+function hstop(){ if (ht) { clearInterval(ht); ht = null; hreset(); } }
+$("hug").onpointerdown = function(){ if (ht) return; hreset(); $("hmsg").textContent = ""; ht = setInterval(function(){ hp += 1.4; $("hbar").style.width = Math.min(hp,100) + "%"; $("hemoji").style.transform = "scale(" + (1 + hp/150) + ")"; if (hp >= 100) { clearInterval(ht); ht = null; $("hmsg").textContent = HUGS[Math.floor(Math.random()*HUGS.length)]; $("hemoji").textContent = "🫂"; setTimeout(function(){ hreset(); $("hemoji").textContent = "🤗"; }, 2500); } }, 40); };
+["pointerup","pointerleave","pointercancel"].forEach(function(e){ $("hug").addEventListener(e, hstop); });
+$("hug").oncontextmenu = function(e){ e.preventDefault(); };
+var SA = [["🙂","Só um pouquinho: o bastante pra lembrar de você a cada 5 minutos 😅"],["🥺","Un poquito más... ya me falta tu voz 🥺"],["😔","I miss you more than I can explain 💜"],["✈️","Saudade nível: quase pegando um avião pra te ver ✈️"],["🫠","Saudade infinita. Eu te quero aqui, num abraço bem apertado 🫂💜"],["🚨","NÍVEL MÁXIMO: me dá um abraço urgente!!! 🚨💜"]];
+function sau(){ var v = +$("sau").value, i = v >= 100 ? 5 : Math.min(4, Math.floor(v/20)); $("smsg").textContent = SA[i][1]; $("semoji").textContent = SA[i][0]; }
+$("sau").oninput = sau; sau();
+var TR = [["Português","Eu te amo"],["Español","Te amo, mi princesa"],["English","I love you"],["Português (carinhoso)","Você é meu lugar favorito"],["Español (venezolano)","Te quiero mucho, mi vida"],["English (dramatic)","I love you to the moon and back"],["Français","Je t’aime"],["Italiano","Ti amo"],["Deutsch","Ich liebe dich"],["日本語","愛してる (Aishiteru)"],["한국어","사랑해 (Saranghae)"],["Русский","Я тебя люблю (Ya tebya lyublyu)"],["Latim","Amo te"],["Español","Eres mi persona favorita"],["Português (fofo)","Tô apaixonado por você, sabia?"],["Linguagem de pombo","Cuu cuu cuuuu 🕊️"],["Binário","01010100 01100101 00100000 01100001 01101101 01101111"],["Código","if (você) { eu.amar(); } // sempre"],["Todas as línguas","Te amo em todas as línguas que existem, e nas que ainda vão inventar 💜"]], ti = -1;
+$("tbtn").onclick = function(){ ti = (ti + 1) % TR.length; $("lang").textContent = TR[ti][0]; $("tam").textContent = TR[ti][1]; };
+var CP = ["Vale 1 chamada de vídeo sem pressa, só pra olhar pra você 📞","Vale 1 filme ou série assistido juntinhos 🎬","Vale 1 música escolhida só pra você 🎵","Vale 1 abraço bem apertado, quando você quiser 🫂","Vale 1 elogio surpresa, a qualquer hora 💜","Vale 1 mensagem de bom dia bem caprichada ☀️"];
+CP.forEach(function(t){ var b = document.createElement("button"); b.className = "card"; b.textContent = t; b.onclick = function(){ var on = b.dataset.on === "1"; b.dataset.on = on ? "0" : "1"; b.textContent = on ? t : "✅ RESGATADO! Me avisa que eu cumpro 💜"; }; $("cup").appendChild(b); });
+</script>
+</body>
+</html>
